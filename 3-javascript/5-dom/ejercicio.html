@@ -37,10 +37,36 @@
         const btnUndo = document.getElementById('btnUndo')
         const tituloEncabezado = document.getElementById('encabezado')
         const inputEncabezado = document.getElementById('inputEncabezado')
+        let titulosAnteriores = [];
 
         function modificarEncabezado() {
             /* Tu código aquí */
+            const nuevoTitulo = inputEncabezado.value.trim(); // Obtener el valor del input y eliminar espacios en blanco
+            if (nuevoTitulo === '') {
+                alert('El valor no puede ser vacío'); // Mostrar alerta si el valor es vacío
+            } else {
+                const tituloAnterior = tituloEncabezado.textContent; // Obtener el título anterior
+                tituloEncabezado.textContent = nuevoTitulo; // Establecer el nuevo título en el encabezado
+                titulosAnteriores.push(tituloAnterior); // Agregar el título anterior al array de títulos anteriores
+                inputEncabezado.value = ''; // Limpiar el input después de establecer el nuevo título
+                habilitarBtnUndo(); // Llamar a la función para habilitar el botón "btnUndo"
+            }
         }
+        function habilitarBtnUndo() {
+            if (titulosAnteriores.length >= 1) {
+                btnUndo.disabled = false; // Habilitar el botón si hay al menos un título anterior
+            }
+        
+        }
+        btnUndo.addEventListener('click', function() {
+            if (titulosAnteriores.length >= 1) {
+                const ultimoTitulo = titulosAnteriores.pop(); // Obtener el último título anterior
+                tituloEncabezado.textContent = ultimoTitulo; // Restaurar el último título anterior en el encabezado
+                if (titulosAnteriores.length === 0) {
+                    btnUndo.disabled = true; // Deshabilitar el botón si ya no hay títulos anteriores
+                }
+            }
+        });
     </script>
 </body>
 
